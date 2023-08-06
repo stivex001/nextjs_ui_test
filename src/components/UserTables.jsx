@@ -6,10 +6,12 @@ import { AiOutlineArrowDown } from "react-icons/ai";
 import { FiEdit2 } from "react-icons/fi";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import Modal from "./Modal";
+import DeleteConfirmationModal from "./DeleteModal";
 
 const UserTables = ({ data }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [userToDelete, setUserToDelete] = useState(null);
   const itemsPerPage = 5; // Number of items to display per page
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -27,14 +29,6 @@ const UserTables = ({ data }) => {
     return `${firstNameInitial}${lastNameInitial}`;
   });
 
-  // Generate a random color class
-  const getRandomColor = () => {
-    const colors = ['bg-blue-400', 'bg-green-400', 'bg-yellow-400', 'bg-red-400', /* Add more colors */];
-    const randomIndex = Math.floor(Math.random() * colors.length);
-    return colors[randomIndex];
-  };
-
-
   const handleEditClick = (user) => {
     setSelectedUser(user);
     setIsModalOpen(true);
@@ -43,6 +37,12 @@ const UserTables = ({ data }) => {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedUser(null); // Reset the selectedUser when the modal is closed
+  };
+
+  const handleDeleteConfirmed = (user) => {
+    // Perform the actual delete operation here, e.g. call an API to delete the user
+    console.log(`Deleting user: ${user.name}`);
+    setUserToDelete(null);
   };
 
   return (
@@ -81,7 +81,7 @@ const UserTables = ({ data }) => {
                     className="cursor-pointer"
                   />
                   <div className="w-10 h-10 flex items-center justify-center rounded-full bg-[#7bc8aa] text-black text-lg">
-                  {userInitials[index]} 
+                    {userInitials[index]}
                     {/* Display initial */}
                   </div>
                   <div className="flex flex-col">
@@ -107,7 +107,7 @@ const UserTables = ({ data }) => {
                 <td className="text-sm px-6 py-3 truncate">*****</td>
                 <td className="text-sm px-6 py-3 truncate">
                   <div className="flex items-center gap-4 ">
-                    <button onClick={() => handleEditClick(user)}>
+                    <button onClick={() => setUserToDelete(user)}>
                       <RiDeleteBin5Line
                         size={20}
                         className="bg-white cursor-pointer"
@@ -123,6 +123,13 @@ const UserTables = ({ data }) => {
             ))}
           </tbody>
           {isModalOpen && <Modal user={selectedUser} closeModal={closeModal} />}
+          {userToDelete && (
+            <DeleteConfirmationModal
+              user={userToDelete}
+              onDeleteConfirmed={handleDeleteConfirmed}
+              onCancel={() => setUserToDelete(null)}
+            />
+          )}
         </table>
         {/* Pagination controls and information */}
         <div className="flex justify-between items-center my-4 ">

@@ -2,8 +2,7 @@ import Image from "next/image";
 import React from "react";
 
 const Modal = ({ user, closeModal }) => {
-
-    const fullNameParts = user.name.split(" ");
+  const fullNameParts = user.name.split(" ");
   const firstNameInitial = fullNameParts[0].charAt(0).toUpperCase();
   const lastNameInitial = fullNameParts.slice(-1)[0].charAt(0).toUpperCase();
 
@@ -14,12 +13,13 @@ const Modal = ({ user, closeModal }) => {
           <h2 className="text-xl font-semibold">Edit User</h2>
         </div>
         <div className="flex items-center space-x-4">
-          <div className={`w-20 h-20 flex items-center justify-center rounded-full bg-blue-400 text-white`}>
+          <div
+            className={`w-20 h-20 flex items-center justify-center rounded-full bg-blue-400 text-white`}
+          >
             {firstNameInitial + lastNameInitial}
           </div>
         </div>
         <form className="mt-4">
-          {/* Add form fields for editing user details */}
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">
               Name
