@@ -1,11 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { AiOutlineArrowDown } from "react-icons/ai";
+import { AiFillStar, AiOutlineArrowDown } from "react-icons/ai";
 import { FiEdit2 } from "react-icons/fi";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { FaStar } from "react-icons/fa";
 import Modal from "./Modal";
 import DeleteConfirmationModal from "./DeleteModal";
 
@@ -34,21 +32,6 @@ const UserTables = ({ data, searchUser }) => {
     return `${firstNameInitial}${lastNameInitial}`;
   });
 
-  const renderRatingStars = (rating) => {
-    const maxRating = 5;
-    const stars = [];
-
-    for (let i = 1; i <= maxRating; i++) {
-      stars.push(
-        <FaStar
-          key={i}
-          className={i <= rating ? "text-[#3182ce]" : "text-gray-300"}
-        />
-      );
-    }
-
-    return stars;
-  };
 
   const handleEditClick = (user) => {
     setSelectedUser(user);
@@ -57,7 +40,7 @@ const UserTables = ({ data, searchUser }) => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setSelectedUser(null); 
+    setSelectedUser(null);
   };
 
   const handleDeleteConfirmed = (user) => {
@@ -71,7 +54,7 @@ const UserTables = ({ data, searchUser }) => {
         <table className="w-full">
           <thead>
             <tr className="border border-solid border-l-0 bg-[#f4f8fa]">
-              <th className="text-md text-[#555884] px-6 py-3">
+              <th className="px-6 py-3 text-left text-md font-medium text-[#555884] flex items-center gap-2'">
                 <div className="flex items-center gap-3">
                   <input
                     type="checkbox"
@@ -83,11 +66,19 @@ const UserTables = ({ data, searchUser }) => {
                   <AiOutlineArrowDown />
                 </div>
               </th>
-              <th className="text-md text-[#555884] px-6 py-3">Status</th>
-              <th className="text-md text-[#555884] px-6 py-3">Email</th>
-              <th className="text-md text-[#555884] px-6 py-3">Role</th>
-              <th className="text-md text-[#555884] px-6 py-3">Rating</th>
-              <th className="text-md text-[#555884] px-6 py-3"></th>
+              <th className="px-6 py-3 text-left text-md font-medium text-[#555884]">
+                Status
+              </th>
+              <th className="px-6 py-3 text-left text-md font-medium text-[#555884]">
+                Email
+              </th>
+              <th className="px-6 py-3 text-left text-md font-medium text-[#555884]">
+                Role
+              </th>
+              <th className="px-6 py-3 text-left text-md font-medium text-[#555884]">
+                Rating
+              </th>
+              <th className="px-6 py-3 text-left text-md font-medium text-[#555884]"></th>
             </tr>
           </thead>
           <tbody>
@@ -124,20 +115,26 @@ const UserTables = ({ data, searchUser }) => {
                 <td className="text-sm px-6 py-3 truncate text-[#4a5568]">
                   {user.company.name}
                 </td>
-                <td className="text-sm px-6 py-3 truncate flex">
-                  {renderRatingStars(user.rating)}
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-secondary-50">
+                  <div className="flex items-center">
+                    <AiFillStar className="text-[#3182ce] text-2xl cursor-pointer hover:scale-105" />
+                    <AiFillStar className="text-[#3182ce] text-2xl cursor-pointer hover:scale-105" />
+                    <AiFillStar className="text-[#3182ce] text-2xl cursor-pointer hover:scale-105" />
+                    <AiFillStar className="text-[#3182ce] text-2xl cursor-pointer hover:scale-105" />
+                    <AiFillStar className="text-[#E2E8F0] text-2xl cursor-pointer hover:scale-105" />
+                  </div>
                 </td>
-                <td className="text-sm px-6 py-3 truncate">
+                <td className="px-6 py-6 text-sm font-medium flex items-center gap-8 truncate">
                   <div className="flex items-center gap-4 ">
                     <button onClick={() => setUserToDelete(user)}>
                       <RiDeleteBin5Line
-                        size={20}
-                        className="bg-white cursor-pointer"
+                        size={30}
+                        className='hover:bg-[#EDF2F7] p-1 rounded-md'
                       />
                     </button>
 
                     <button onClick={() => handleEditClick(user)}>
-                      <FiEdit2 size={20} className="bg-white cursor-pointer" />
+                      <FiEdit2 size={30} className='hover:bg-[#EDF2F7] p-1 rounded-md' />
                     </button>
                   </div>
                 </td>
@@ -154,7 +151,7 @@ const UserTables = ({ data, searchUser }) => {
           )}
         </table>
         {/* Pagination controls and information */}
-        <div className="text-center md:flex justify-between items-center my-4 ">
+        <div className="text-center md:flex justify-between items-center my-4 p-4 ">
           <p className="mb-5 text-sm text-gray-600">
             Showing {startIndex + 1} to {Math.min(endIndex, data.length)} of{" "}
             {data.length} results
