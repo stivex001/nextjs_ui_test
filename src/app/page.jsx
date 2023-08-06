@@ -1,3 +1,4 @@
+import UserTables from "@/components/UserTables";
 import Image from "next/image";
 import {AiOutlineSearch} from "react-icons/ai"
 
@@ -12,6 +13,8 @@ export default function Home() {
             <input type="text" placeholder="Search" className="border-none outline-none focus:ring-cyan-400" />
           </div>
         </div>
+        {/* UserTables */}
+        <UserTables />
       </div>
     </main>
   );
