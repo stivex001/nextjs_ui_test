@@ -1,4 +1,4 @@
-# Tech64 Project TeST
+# Tech64 Project TEST
 
 ## Introduction
 
