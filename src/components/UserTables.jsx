@@ -1,12 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineArrowDown } from "react-icons/ai";
 import { FiEdit2 } from "react-icons/fi";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import Modal from "./Modal";
 
 const UserTables = ({ data }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
   const itemsPerPage = 5; // Number of items to display per page
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -16,6 +19,31 @@ const UserTables = ({ data }) => {
 
   // Slice the data array to get the items for the current page
   const userData = data.slice(startIndex, endIndex);
+
+  const userInitials = userData.map((user) => {
+    const fullNameParts = user.name.split(" ");
+    const firstNameInitial = fullNameParts[0].charAt(0).toUpperCase();
+    const lastNameInitial = fullNameParts.slice(-1)[0].charAt(0).toUpperCase();
+    return `${firstNameInitial}${lastNameInitial}`;
+  });
+
+  // Generate a random color class
+  const getRandomColor = () => {
+    const colors = ['bg-blue-400', 'bg-green-400', 'bg-yellow-400', 'bg-red-400', /* Add more colors */];
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    return colors[randomIndex];
+  };
+
+
+  const handleEditClick = (user) => {
+    setSelectedUser(user);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedUser(null); // Reset the selectedUser when the modal is closed
+  };
 
   return (
     <div className="mt-5 relative w-full flex flex-col mb-6">
@@ -43,7 +71,7 @@ const UserTables = ({ data }) => {
             </tr>
           </thead>
           <tbody>
-            {userData.map((user) => (
+            {userData.map((user, index) => (
               <tr className="border border-solid border-l-0 " key={user.id}>
                 <td className="text-sm px-6 py-3 flex gap-3 items-center">
                   <input
@@ -52,11 +80,10 @@ const UserTables = ({ data }) => {
                     id=""
                     className="cursor-pointer"
                   />
-                  <Image
-                    src=""
-                    alt=""
-                    className="w-7 h-7 rounded-full object-cover"
-                  />
+                  <div className="w-10 h-10 flex items-center justify-center rounded-full bg-[#7bc8aa] text-black text-lg">
+                  {userInitials[index]} 
+                    {/* Display initial */}
+                  </div>
                   <div className="flex flex-col">
                     <p className="text-sm text-[rgb(23, 25, 35)] truncate font-medium">
                       {user.name}
@@ -80,16 +107,22 @@ const UserTables = ({ data }) => {
                 <td className="text-sm px-6 py-3 truncate">*****</td>
                 <td className="text-sm px-6 py-3 truncate">
                   <div className="flex items-center gap-4 ">
-                    <RiDeleteBin5Line
-                      size={20}
-                      className="bg-white cursor-pointer"
-                    />
-                    <FiEdit2 size={20} className="bg-white cursor-pointer" />
+                    <button onClick={() => handleEditClick(user)}>
+                      <RiDeleteBin5Line
+                        size={20}
+                        className="bg-white cursor-pointer"
+                      />
+                    </button>
+
+                    <button onClick={() => handleEditClick(user)}>
+                      <FiEdit2 size={20} className="bg-white cursor-pointer" />
+                    </button>
                   </div>
                 </td>
               </tr>
             ))}
           </tbody>
+          {isModalOpen && <Modal user={selectedUser} closeModal={closeModal} />}
         </table>
         {/* Pagination controls and information */}
         <div className="flex justify-between items-center my-4 ">
