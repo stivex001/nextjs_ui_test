@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineArrowDown } from "react-icons/ai";
 import { FiEdit2 } from "react-icons/fi";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import { FaStar } from "react-icons/fa";
 import Modal from "./Modal";
 import DeleteConfirmationModal from "./DeleteModal";
 
@@ -25,7 +26,6 @@ const UserTables = ({ data, searchUser }) => {
   const filteredUserData = userData.filter((user) => {
     return user.name.toLowerCase().includes(searchUser.toLowerCase());
   });
-  
 
   const userInitials = userData.map((user) => {
     const fullNameParts = user.name.split(" ");
@@ -33,6 +33,22 @@ const UserTables = ({ data, searchUser }) => {
     const lastNameInitial = fullNameParts.slice(-1)[0].charAt(0).toUpperCase();
     return `${firstNameInitial}${lastNameInitial}`;
   });
+
+  const renderRatingStars = (rating) => {
+    const maxRating = 5;
+    const stars = [];
+
+    for (let i = 1; i <= maxRating; i++) {
+      stars.push(
+        <FaStar
+          key={i}
+          className={i <= rating ? "text-[#3182ce]" : "text-gray-300"}
+        />
+      );
+    }
+
+    return stars;
+  };
 
   const handleEditClick = (user) => {
     setSelectedUser(user);
@@ -109,7 +125,9 @@ const UserTables = ({ data, searchUser }) => {
                 <td className="text-sm px-6 py-3 truncate text-[#4a5568]">
                   {user.company.name}
                 </td>
-                <td className="text-sm px-6 py-3 truncate">*****</td>
+                <td className="text-sm px-6 py-3 truncate flex">
+                  {renderRatingStars(user.rating)}
+                </td>
                 <td className="text-sm px-6 py-3 truncate">
                   <div className="flex items-center gap-4 ">
                     <button onClick={() => setUserToDelete(user)}>
