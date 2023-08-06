@@ -57,11 +57,10 @@ const UserTables = ({ data, searchUser }) => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setSelectedUser(null); // Reset the selectedUser when the modal is closed
+    setSelectedUser(null); 
   };
 
   const handleDeleteConfirmed = (user) => {
-    // Perform the actual delete operation here, e.g. call an API to delete the user
     console.log(`Deleting user: ${user.name}`);
     setUserToDelete(null);
   };
