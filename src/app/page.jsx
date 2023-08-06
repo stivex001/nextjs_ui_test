@@ -8,17 +8,20 @@ import { useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 
 
-export default  function Home() {
+export default function Home() {
   const [searchUser, setSearchUser] = useState("");
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getData()
       .then((result) => {
         setData(result);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
+        setIsLoading(false);
       });
   }, []);
 
@@ -40,7 +43,13 @@ export default  function Home() {
         </div>
         {/* UserTables */}
 
-        <UserTables data={data} searchUser={searchUser} />
+        {isLoading ? (
+          <div className="flex justify-center mt-10">
+         <p className="text-xl text-green-600">Loading........</p>
+          </div>
+        ) : (
+          <UserTables data={data} searchUser={searchUser} />
+        )}
       </div>
     </main>
   );

@@ -77,7 +77,7 @@ const UserTables = ({ data, searchUser }) => {
           </thead>
           <tbody>
             {filteredUserData.map((user, index) => (
-              <tr className="border border-solid border-l-0 " key={user.id}>
+              <tr className="border border-solid border-l-0  " key={user.id}>
                 <td className="text-sm px-6 py-3 flex gap-3 items-center">
                   <input
                     type="checkbox"
