@@ -8,7 +8,7 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import Modal from "./Modal";
 import DeleteConfirmationModal from "./DeleteModal";
 
-const UserTables = ({ data }) => {
+const UserTables = ({ data, searchUser }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [userToDelete, setUserToDelete] = useState(null);
@@ -21,6 +21,11 @@ const UserTables = ({ data }) => {
 
   // Slice the data array to get the items for the current page
   const userData = data.slice(startIndex, endIndex);
+
+  const filteredUserData = userData.filter((user) => {
+    return user.name.toLowerCase().includes(searchUser.toLowerCase());
+  });
+  
 
   const userInitials = userData.map((user) => {
     const fullNameParts = user.name.split(" ");
@@ -71,7 +76,7 @@ const UserTables = ({ data }) => {
             </tr>
           </thead>
           <tbody>
-            {userData.map((user, index) => (
+            {filteredUserData.map((user, index) => (
               <tr className="border border-solid border-l-0 " key={user.id}>
                 <td className="text-sm px-6 py-3 flex gap-3 items-center">
                   <input
@@ -132,8 +137,8 @@ const UserTables = ({ data }) => {
           )}
         </table>
         {/* Pagination controls and information */}
-        <div className="flex justify-between items-center my-4 ">
-          <p className="text-sm text-gray-600">
+        <div className="text-center md:flex justify-between items-center my-4 ">
+          <p className="mb-5 text-sm text-gray-600">
             Showing {startIndex + 1} to {Math.min(endIndex, data.length)} of{" "}
             {data.length} results
           </p>
